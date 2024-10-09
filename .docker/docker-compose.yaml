@@ -1,0 +1,30 @@
+services:
+  base_db:
+    env_file:
+      - .env
+    image: postgres:17-alpine3.20
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+
+  base_backend_app:
+    env_file:
+      - .env
+    build: 
+      dockerfile: .docker/Dockerfile
+      context: ../
+    command: python /app/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ../:/app
+    ports:
+      - 8000:8000
+    depends_on:
+      - base_db
+
+volumes:
+  postgres_data:
