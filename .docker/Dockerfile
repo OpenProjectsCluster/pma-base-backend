@@ -1,13 +1,18 @@
 FROM python:3.10
 
+ARG APP_PORT
+ARG POETRY_VERSION
+
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED=1
 
+ENV POETRY_NO_INTERACTION=1
+ENV POETRY_VIRTUALENVS_CREATE=false
+
 WORKDIR /app
 
-COPY requirements.txt /app/
-RUN pip install -r requirements.txt
-
 COPY . /app/
+RUN pip install poetry==${POETRY_VERSION}
+RUN poetry install --no-interaction --no-ansi
 
-EXPOSE 8000
+EXPOSE ${APP_PORT}

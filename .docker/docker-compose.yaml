@@ -1,5 +1,5 @@
 services:
-  base_db:
+  db:
     env_file:
       - .env
     image: postgres:17-alpine3.20
@@ -10,7 +10,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     ports:
-      - 5432:5432
+      - ${DB_PORT}:${DB_PORT}
 
   base_backend_app:
     env_file:
@@ -18,13 +18,16 @@ services:
     build: 
       dockerfile: .docker/Dockerfile
       context: ../
-    command: python /app/manage.py runserver 0.0.0.0:8000
+      args:
+        - APP_PORT=${APP_PORT}
+        - POETRY_VERSION=${POETRY_VERSION}
+    command: python /app/manage.py runserver 0.0.0.0:${APP_PORT}
     volumes:
       - ../:/app
     ports:
-      - 8000:8000
+      - ${APP_PORT}:${APP_PORT}
     depends_on:
-      - base_db
+      - db
 
 volumes:
   postgres_data:
