@@ -12,7 +12,10 @@ ALLOWED_HOSTS = ["*"]
 
 FIRST_PARTY_APPS = ["user.apps.UserConfig"]
 
-THIRD_PARTY_APPS = ["rest_framework"]
+THIRD_PARTY_APPS = [
+    "rest_framework",
+    "django_cleanup.apps.CleanupConfig",
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -94,7 +97,7 @@ TEMPLATES = [
 
 STATIC_URL = "static/"
 
-MEADIA_URL = "media/"
-MEADIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 AUTH_USER_MODEL = "user.CustomUser"
